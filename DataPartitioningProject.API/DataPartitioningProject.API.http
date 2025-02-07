@@ -1,0 +1,6 @@
+@DataPartitioningProject.API_HostAddress = http://localhost:5187
+
+GET {{DataPartitioningProject.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
