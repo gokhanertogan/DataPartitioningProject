@@ -1,0 +1,19 @@
+2026-10-23 10:19:45.422 +03:00 [WRN] [ThreadId:1] Server GC mode is not enabled. For better performance and more accurate load test results, enable it by adding <ServerGarbageCollection>true</ServerGarbageCollection> to your .csproj file, or #:property ServerGarbageCollection=true to the top of your .cs file script. Docs: https://learn.microsoft.com/en-us/dotnet/core/runtime-config/garbage-collector#workstation-vs-server
+2026-10-23 10:19:45.443 +03:00 [INF] [ThreadId:1] NBomber 6.7.1 started a new session: 2026-10-23_07-19-45_4cd4391
+2026-10-23 10:19:45.443 +03:00 [INF] [ThreadId:1] NBomber started as single node
+2026-10-23 10:19:45.444 +03:00 [INF] [ThreadId:1] License validation....
+2026-10-23 10:19:45.445 +03:00 [WRN] [ThreadId:1] THIS VERSION IS FREE ONLY FOR PERSONAL USE. You can't use it for an organization.
+2026-10-23 10:19:45.450 +03:00 [INF] [ThreadId:1] Reports folder: /Users/gokhanertogan/_profile-cleanup2/DataPartitioningProject/NBomberLoadTest/bin/Release/net10.0/reports
+2026-10-23 10:19:45.451 +03:00 [INF] [ThreadId:1] Plugins: no plugins were loaded
+2026-10-23 10:19:45.451 +03:00 [INF] [ThreadId:1] Reporting sinks: no reporting sinks were loaded
+2026-10-23 10:19:45.451 +03:00 [INF] [ThreadId:1] Starting init...
+2026-10-23 10:19:45.454 +03:00 [INF] [ThreadId:1] Target scenarios: http-load-test
+2026-10-23 10:19:45.455 +03:00 [INF] [ThreadId:1] Init finished
+2026-10-23 10:19:45.463 +03:00 [INF] [ThreadId:1] Starting warm up...
+2026-10-23 10:19:45.464 +03:00 [INF] [ThreadId:1] Warm up for scenarios: http-load-test
+2026-10-23 10:19:45.465 +03:00 [INF] [ThreadId:1] Warm up duration: 00:00:30
+2026-10-23 10:20:16.495 +03:00 [INF] [ThreadId:28] Starting bombing...
+2026-10-23 10:21:20.530 +03:00 [INF] [ThreadId:19] Stopping scenarios...
+2026-10-23 10:21:20.536 +03:00 [INF] [ThreadId:19] Calculating final statistics...
+2026-10-23 10:21:20.882 +03:00 [INF] [ThreadId:19] Reports saved in folder: /Users/gokhanertogan/_profile-cleanup2/DataPartitioningProject/NBomberLoadTest/reports
+2026-10-23 10:21:20.882 +03:00 [WRN] [ThreadId:19] THIS VERSION IS FREE ONLY FOR PERSONAL USE. You can't use it for an organization.
