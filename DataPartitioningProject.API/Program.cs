@@ -7,8 +7,10 @@ var builder = WebApplication.CreateBuilder(args);
 
 
 builder.Services.AddOpenApi();
+// SQL commands go through the standard logging pipeline (category "Microsoft.EntityFrameworkCore.Database.Command").
+// They are off by default; turn them on in configuration, e.g. Logging__LogLevel__Microsoft.EntityFrameworkCore.Database.Command=Information.
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("PostgreSqlConnection")).LogTo(Console.WriteLine, Microsoft.Extensions.Logging.LogLevel.Information));
+    options.UseNpgsql(builder.Configuration.GetConnectionString("PostgreSqlConnection")));
 
 builder.Services.AddScoped<IVariantCampaignRepository, VariantCampaignRepository>();
 builder.Services.AddScoped<IVariantCampaignService, VariantCampaignService>();
