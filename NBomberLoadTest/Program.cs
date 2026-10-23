@@ -7,7 +7,7 @@ var scenario = Scenario.Create("http-load-test", async context =>
 {
     var request = new HttpRequestMessage(HttpMethod.Get, "http://localhost:5187/variant-campaigns");
 
-    var response = await httpClient.SendAsync(request);
+    using var response = await httpClient.SendAsync(request);
 
     return response.IsSuccessStatusCode
         ? Response.Ok(sizeBytes: (int)response.Content.Headers.ContentLength!)

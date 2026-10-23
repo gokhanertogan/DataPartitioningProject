@@ -58,14 +58,14 @@ namespace DataPartitioningProject.API.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
 
-            migrationBuilder.Sql($"DROP TABLE IF EXISTS VariantCampaigns_1_200;");
-            migrationBuilder.Sql($"DROP TABLE IF EXISTS VariantCampaigns_1_400;");
-            migrationBuilder.Sql($"DROP TABLE IF EXISTS VariantCampaigns_1_600;");
-            migrationBuilder.Sql($"DROP TABLE IF EXISTS VariantCampaigns_1_800;");
-            migrationBuilder.Sql($"DROP TABLE IF EXISTS VariantCampaigns_1_1000;");
-            migrationBuilder.Sql($"DROP TABLE IF EXISTS VariantCampaigns_1_1200;");
+            migrationBuilder.Sql(@"DROP TABLE IF EXISTS ""VariantCampaigns_1_200"";");
+            migrationBuilder.Sql(@"DROP TABLE IF EXISTS ""VariantCampaigns_1_400"";");
+            migrationBuilder.Sql(@"DROP TABLE IF EXISTS ""VariantCampaigns_1_600"";");
+            migrationBuilder.Sql(@"DROP TABLE IF EXISTS ""VariantCampaigns_1_800"";");
+            migrationBuilder.Sql(@"DROP TABLE IF EXISTS ""VariantCampaigns_1_1000"";");
+            migrationBuilder.Sql(@"DROP TABLE IF EXISTS ""VariantCampaigns_1_1200"";");
 
-            migrationBuilder.Sql("DROP TABLE IF EXISTS VariantCampaigns;");
+            migrationBuilder.Sql(@"DROP TABLE IF EXISTS ""VariantCampaigns"";");
 
             migrationBuilder.DropTable(
                 name: "VariantCampaignMappings");

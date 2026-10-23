@@ -3,9 +3,10 @@ using DataPartitioningProject.API.Contexts;
 using DataPartitioningProject.API.Entities;
 using Microsoft.EntityFrameworkCore;
 
-public class VariantCampaignDataSeeder(AppDbContext context)
+public class VariantCampaignDataSeeder(AppDbContext context, IConfiguration configuration)
 {
     private readonly AppDbContext _context = context;
+    private readonly long _variantCount = configuration.GetValue<long?>("Seeding:VariantCount") ?? 2_000_000;
     private readonly Faker _faker = new();
 
     public async Task SeedAsync()
@@ -20,7 +21,7 @@ public class VariantCampaignDataSeeder(AppDbContext context)
         var variantCampaignMappings = new List<VariantCampaignMapping>();
         var variantCampaigns = new List<VariantCampaign>();
 
-        for (long variantId = 1; variantId <= 2_000_000; variantId++)
+        for (long variantId = 1; variantId <= _variantCount; variantId++)
         {
             var salePrice = _faker.Random.Decimal(10, 500);
             var selectedCampaigns = _faker.Random.ListItems(campaignIds, _faker.Random.Int(1, 15)).ToList();
@@ -47,12 +48,13 @@ public class VariantCampaignDataSeeder(AppDbContext context)
                 await _context.VariantCampaignMappings.AddRangeAsync(variantCampaignMappings);
                 await _context.VariantCampaigns.AddRangeAsync(variantCampaigns);
                 await _context.SaveChangesAsync();
+                // Detach the saved batch; otherwise every seeded row stays tracked and memory grows unbounded.
+                _context.ChangeTracker.Clear();
 
                 variantCampaignMappings.Clear();
                 variantCampaigns.Clear();
 
                 Console.WriteLine($"{variantId} records added...");
-                Thread.Sleep(5000);
             }
         }
 

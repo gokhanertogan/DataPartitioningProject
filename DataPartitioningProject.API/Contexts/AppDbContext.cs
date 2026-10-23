@@ -25,12 +25,25 @@ public class AppDbContext : DbContext
             .Property(v => v.CampaignId)
             .HasColumnName("campaignid");
 
+        // The primary key is (variantid, campaignid), so lookups by campaign alone need their own index.
+        modelBuilder.Entity<VariantCampaign>()
+            .HasIndex(v => v.CampaignId);
+
         modelBuilder.Entity<VariantCampaign>()
             .Property(v => v.VariantSalePrice)
             .HasColumnName("variantsaleprice");
 
         modelBuilder.Entity<VariantCampaignMapping>()
          .HasKey(v => v.Id);
+
+        modelBuilder.Entity<VariantCampaignMapping>()
+            .HasIndex(v => v.VariantId)
+            .IsUnique();
+
+        // GIN index so jsonb containment queries (CampaignIds @> '[42]') do not scan the whole table.
+        modelBuilder.Entity<VariantCampaignMapping>()
+            .HasIndex(v => v.CampaignIds)
+            .HasMethod("gin");
 
         modelBuilder.Entity<VariantCampaignMapping>()
             .Property(v => v.CampaignIds)
@@ -41,7 +54,7 @@ public class AppDbContext : DbContext
             )
             .Metadata.SetValueComparer(
                 new ValueComparer<List<long>>(
-                    (c1, c2) => c1.SequenceEqual(c2),
+                    (c1, c2) => c1!.SequenceEqual(c2!),
                     c => c.Aggregate(0, (agg, item) => agg ^ item.GetHashCode()),
                     c => c.ToList())
             );

@@ -8,8 +8,11 @@ public interface IVariantCampaignRepository
 {
     Task<List<VariantCampaign>> GetCampaignVariantsAsync(long campaignId);
     Task<List<long>> GetVariantCampaignsAsync(long variantId);
+    Task<List<VariantCampaignMapping>> GetCampaignVariantMappingsAsync(long campaignId);
+    Task<VariantCampaignMapping?> GetVariantCampaignMappingAsync(long variantId);
     Task AddVariantCampaignAsync(VariantCampaign campaign);
     Task AddVariantCampaignMappingAsync(VariantCampaignMapping mapping);
+    Task SaveChangesAsync();
 }
 
 public class VariantCampaignRepository(AppDbContext context) : IVariantCampaignRepository
@@ -19,6 +22,7 @@ public class VariantCampaignRepository(AppDbContext context) : IVariantCampaignR
     public async Task<List<VariantCampaign>> GetCampaignVariantsAsync(long campaignId)
     {
         return await _context.VariantCampaigns
+            .AsNoTracking()
             .Where(vc => vc.CampaignId == campaignId)
             .ToListAsync();
     }
@@ -33,6 +37,21 @@ public class VariantCampaignRepository(AppDbContext context) : IVariantCampaignR
         return result ?? [];
     }
 
+    public async Task<List<VariantCampaignMapping>> GetCampaignVariantMappingsAsync(long campaignId)
+    {
+        // Translates to "CampaignIds" @> '[campaignId]', which can use the GIN index.
+        return await _context.VariantCampaignMappings
+            .AsNoTracking()
+            .Where(vcm => EF.Functions.JsonContains(vcm.CampaignIds, $"[{campaignId}]"))
+            .ToListAsync();
+    }
+
+    public async Task<VariantCampaignMapping?> GetVariantCampaignMappingAsync(long variantId)
+    {
+        return await _context.VariantCampaignMappings
+            .FirstOrDefaultAsync(vcm => vcm.VariantId == variantId);
+    }
+
     public async Task AddVariantCampaignAsync(VariantCampaign campaign)
     {
         _context.VariantCampaigns.Add(campaign);
@@ -42,6 +61,11 @@ public class VariantCampaignRepository(AppDbContext context) : IVariantCampaignR
     public async Task AddVariantCampaignMappingAsync(VariantCampaignMapping mapping)
     {
         _context.VariantCampaignMappings.Add(mapping);
+        await _context.SaveChangesAsync();
+    }
+
+    public async Task SaveChangesAsync()
+    {
         await _context.SaveChangesAsync();
     }
 }

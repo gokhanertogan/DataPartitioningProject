@@ -37,6 +37,8 @@ namespace DataPartitioningProject.API.Migrations
 
                     b.HasKey("VariantId", "CampaignId");
 
+                    b.HasIndex("CampaignId");
+
                     b.ToTable("VariantCampaigns");
                 });
 
@@ -59,6 +61,13 @@ namespace DataPartitioningProject.API.Migrations
                         .HasColumnType("numeric");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CampaignIds");
+
+                    NpgsqlIndexBuilderExtensions.HasMethod(b.HasIndex("CampaignIds"), "gin");
+
+                    b.HasIndex("VariantId")
+                        .IsUnique();
 
                     b.ToTable("VariantCampaignMappings");
                 });

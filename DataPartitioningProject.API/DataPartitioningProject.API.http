@@ -1,6 +1,28 @@
 @DataPartitioningProject.API_HostAddress = http://localhost:5187
 
-GET {{DataPartitioningProject.API_HostAddress}}/weatherforecast/
+### Variants of a random campaign (endpoint used by the NBomber load test)
+GET {{DataPartitioningProject.API_HostAddress}}/variant-campaigns
 Accept: application/json
+
+### Variants of a campaign, read from the partitioned VariantCampaigns table
+GET {{DataPartitioningProject.API_HostAddress}}/campaigns/42/variants
+Accept: application/json
+
+### Variants of a campaign, read from the jsonb mapping table via the GIN index
+GET {{DataPartitioningProject.API_HostAddress}}/campaigns/42/variant-mappings
+Accept: application/json
+
+### Campaign ids of a variant
+GET {{DataPartitioningProject.API_HostAddress}}/variants/1/campaigns
+Accept: application/json
+
+### Add a variant to a campaign
+POST {{DataPartitioningProject.API_HostAddress}}/variants/1/campaigns
+Content-Type: application/json
+
+{
+  "campaignId": 42,
+  "salePrice": 99.90
+}
 
 ###
