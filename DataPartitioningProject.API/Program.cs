@@ -26,6 +26,12 @@ if (app.Environment.IsDevelopment())
 
 using (var scope = app.Services.CreateScope())
 {
+    // Used by docker-compose. Locally, apply migrations with `dotnet ef database update` instead.
+    if (app.Configuration.GetValue<bool>("Database:MigrateOnStartup"))
+    {
+        await scope.ServiceProvider.GetRequiredService<AppDbContext>().Database.MigrateAsync();
+    }
+
     var seeder = scope.ServiceProvider.GetRequiredService<VariantCampaignDataSeeder>();
     await seeder.SeedAsync();
 }

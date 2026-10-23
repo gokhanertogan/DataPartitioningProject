@@ -1,0 +1,32 @@
+# Local stack: PostgreSQL 17 + the API. Credentials are development placeholders.
+services:
+  postgres:
+    image: postgres:17
+    environment:
+      POSTGRES_USER: sa
+      POSTGRES_PASSWORD: Your_password123
+      POSTGRES_DB: DataPartitioning
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U sa -d DataPartitioning"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  api:
+    build: .
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      ConnectionStrings__PostgreSqlConnection: "Host=postgres;Port=5432;Username=sa;Password=Your_password123;Database=DataPartitioning;SSL Mode=Disable;Gss Encryption Mode=Disable;Pooling=true;MinPoolSize=5;MaxPoolSize=50;Timeout=15;"
+      Database__MigrateOnStartup: "true"
+      Seeding__VariantCount: "${SEED_VARIANT_COUNT:-100000}"
+    ports:
+      - "${API_PORT:-5187}:8080"
+
+volumes:
+  postgres-data:
